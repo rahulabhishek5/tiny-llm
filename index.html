@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pocket AI Lab — Technical Hub</title>
+  <meta name="description" content="Technical specifications, RAM footprints, and native orchestration architecture for on-device AI.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav-bar">
+    <div class="brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-text">Pocket<strong>AI</strong> Lab</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#models">Models</a>
+      <a href="#matrix">Master Matrix</a>
+      <a href="#budget">RAM Simulator</a>
+      <a href="#workflows">Pipelines</a>
+      <a href="#architecture">App Stack</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="badge-pill">Target Hardware: POCO X7 Pro 5G • 8 GB LPDDR5X • Dimensity 8400-Ultra</div>
+      <h1 class="hero-title">On-Device AI Engine <span class="gradient-text">Specifications</span></h1>
+      <p class="hero-lead">
+        A complete technical reference for combining lightweight, task-specific models into a unified, offline-first personal assistant on Android.
+      </p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value" id="stat-model-count">16</span>
+          <span class="stat-label">Specialist Models</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">~4.2 GB</span>
+          <span class="stat-label">Safe RAM Headroom</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">3 Runtimes</span>
+          <span class="stat-label">Sherpa + llama.cpp + ONNX</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">100%</span>
+          <span class="stat-label">Offline &amp; Private</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Models Section -->
+  <section id="models" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Model Technical Cards</h2>
+          <p>Filter by domain or search by model name to inspect parameter counts, memory consumption, and runtime configurations.</p>
+        </div>
+        <div class="search-box">
+          <input type="text" id="model-search" placeholder="Search models or engines...">
+        </div>
+      </div>
+
+      <div class="filter-bar" id="category-filters">
+        <button class="filter-btn active" data-filter="all">All Models</button>
+        <button class="filter-btn" data-filter="brain">Brain (LLMs)</button>
+        <button class="filter-btn" data-filter="voice">Voice &amp; Audio</button>
+        <button class="filter-btn" data-filter="vision">Vision &amp; OCR</button>
+        <button class="filter-btn" data-filter="memory">Embeddings / RAG</button>
+        <button class="filter-btn" data-filter="india">Indian Languages</button>
+      </div>
+
+      <div class="models-grid" id="models-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Master Matrix Table -->
+  <section id="matrix" class="section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Master Technical Matrix</h2>
+          <p>Side-by-side comparison of parameter sizes, on-disk footprints, active memory consumption, and runtime engines.</p>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Role</th>
+              <th>Parameters</th>
+              <th>Quantization</th>
+              <th>Disk Size</th>
+              <th>Peak RAM</th>
+              <th>Runtime Engine</th>
+              <th>Hardware Target</th>
+            </tr>
+          </thead>
+          <tbody id="matrix-tbody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive RAM Budget Calculator -->
+  <section id="budget" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Interactive 8 GB RAM Allocation Simulator</h2>
+          <p>Select which models you plan to run simultaneously to test whether your setup remains within safe operating limits or triggers Android's Low Memory Killer.</p>
+        </div>
+      </div>
+
+      <div class="simulator-wrapper">
+        <div class="simulator-controls">
+          <div class="sim-baseline-info">
+            <span class="bullet-dot"></span>
+            <span>HyperOS System + UI Baseline Reserved: <strong>3,400 MB</strong></span>
+          </div>
+          <div id="sim-checkbox-list" class="sim-checklist">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <div class="simulator-gauge-card">
+          <h3>Total RAM Consumption</h3>
+          <div class="gauge-bar-track">
+            <div id="gauge-bar" class="gauge-bar-fill" style="width: 42%;"></div>
+            <div class="gauge-limit-marker" title="Safe Limit: 7,400 MB"></div>
+          </div>
+          <div class="gauge-meta">
+            <div>Total Used: <strong id="gauge-used-val">3,400 MB</strong> / 8,000 MB</div>
+            <div id="gauge-status" class="status-safe">SAFE (Headroom Available)</div>
+          </div>
+          <div id="gauge-alert-box" class="gauge-alert-box">
+            System memory is within normal operating parameters.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- End-to-End Pipelines -->
+  <section id="workflows" class="section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>End-to-End Orchestrated Workflows</h2>
+          <p>Execution flows showing data movement across individual specialized models.</p>
+        </div>
+      </div>
+      <div class="workflows-grid" id="workflows-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Single App Architecture Guide -->
+  <section id="architecture" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2>Single App Architecture Blueprint</h2>
+          <p>How the native Android orchestration application is constructed using Kotlin and the Android NDK.</p>
+        </div>
+      </div>
+
+      <div class="arch-box">
+        <div class="arch-col">
+          <div class="arch-card">
+            <div class="arch-badge">Runtime Layer 1</div>
+            <h3>Sherpa-ONNX (JNI)</h3>
+            <p>Direct C++ bindings handling audio hardware I/O:</p>
+            <ul>
+              <li><strong>Continuous Microphone Capture:</strong> 16 kHz mono buffer streaming.</li>
+              <li><strong>Silero VAD:</strong> Real-time zero-copy chunk evaluation.</li>
+              <li><strong>Whisper Tiny &amp; IndicConformer:</strong> Fast CPU-based speech decoding.</li>
+              <li><strong>Piper &amp; Kokoro:</strong> Text-to-speech output streamed directly to Android AudioTrack.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-card">
+            <div class="arch-badge">Runtime Layer 2</div>
+            <h3>llama.cpp (NDK + Vulkan)</h3>
+            <p>Compiled natively as <code>libllama.so</code> to run GGUF quantized models:</p>
+            <ul>
+              <li><strong>Mali-G720 GPU Acceleration:</strong> Vulkan backend offloading.</li>
+              <li><strong>Qwen3-1.7B Orchestration:</strong> Generates strict JSON schema tool calls.</li>
+              <li><strong>Gemma 3 270M:</strong> Ultra-fast text classification and intent triage.</li>
+              <li><strong>Moondream 2 VLM:</strong> Multimodal visual reasoning and Q&amp;A.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-card">
+            <div class="arch-badge">Runtime Layer 3</div>
+            <h3>ONNX Runtime Mobile</h3>
+            <p>Cross-platform inference engine for vision and memory models:</p>
+            <ul>
+              <li><strong>BGE-small-en:</strong> 384-dimensional vector embeddings for local RAG.</li>
+              <li><strong>PP-OCR Mobile:</strong> Fast text detection and line extraction.</li>
+              <li><strong>YOLO11n:</strong> Object detection at 60+ FPS via OpenCL/NNAPI.</li>
+              <li><strong>MobileCLIP-S0:</strong> Zero-shot image and text similarity matching.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Model Details Modal -->
+<div id="model-modal" class="modal-backdrop">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <h3 id="modal-title">Model Name</h3>
+        <span id="modal-category" class="tag tag-engine">Category</span>
+      </div>
+      <button id="modal-close-btn" class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-content">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <p><strong>Pocket AI Lab</strong> — Technical Architecture &amp; On-Device Machine Learning Specifications.</p>
+    <p class="text-muted">Targeted to MediaTek Dimensity 8400-Ultra • 8 GB LPDDR5X RAM • Android 15 / HyperOS</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

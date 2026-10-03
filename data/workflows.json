@@ -1,0 +1,56 @@
+[
+  {
+    "id": "wf-voice-command",
+    "title": "Voice-Activated Android Action",
+    "intent": "Remind me tomorrow at 7 AM to submit my assignment",
+    "stages": [
+      { "step": "Capture", "model": "Silero VAD", "ram": "4 MB", "desc": "16kHz microphone stream detection" },
+      { "step": "Transcribe", "model": "Whisper Tiny", "ram": "120 MB", "desc": "Offline speech-to-text inference" },
+      { "step": "Reason & Route", "model": "Qwen3-1.7B", "ram": "1,550 MB", "desc": "Emits JSON: {\"action\": \"set_reminder\", \"time\": \"07:00\"}" },
+      { "step": "Execute", "model": "Android AlarmManager", "ram": "< 1 MB", "desc": "Native system API scheduling" },
+      { "step": "Confirm", "model": "Piper TTS", "ram": "60 MB", "desc": "Spoken audio: 'Reminder scheduled for 7 AM'" }
+    ],
+    "peak_ram": "1,550 MB",
+    "end_to_end_latency": "~1.1 seconds"
+  },
+  {
+    "id": "wf-notice-board",
+    "title": "Notice Board Circular Digitizer",
+    "intent": "Extract registration deadlines from a photographed university circular",
+    "stages": [
+      { "step": "Capture", "model": "CameraX API", "ram": "30 MB", "desc": "High-res static frame capture" },
+      { "step": "OCR Extraction", "model": "PP-OCR Mobile", "ram": "75 MB", "desc": "Rapid text detection and line transcription" },
+      { "step": "Structured Parse", "model": "Qwen3-1.7B", "ram": "1,550 MB", "desc": "Parses event name, submission deadline, and venue" },
+      { "step": "Calendar Link", "model": "CalendarContract API", "ram": "< 1 MB", "desc": "Creates local calendar entry" },
+      { "step": "Spoken Summary", "model": "Piper TTS", "ram": "60 MB", "desc": "Spoken audio confirmation" }
+    ],
+    "peak_ram": "1,550 MB",
+    "end_to_end_latency": "~1.8 seconds"
+  },
+  {
+    "id": "wf-personal-memory",
+    "title": "Private Semantic Memory (Local RAG)",
+    "intent": "What did I write down about FastAPI deployment last week?",
+    "stages": [
+      { "step": "Query Embed", "model": "BGE-small-en", "ram": "68 MB", "desc": "Encodes query into a 384-dimensional vector" },
+      { "step": "Vector Search", "model": "SQLite + Cosine", "ram": "12 MB", "desc": "Scans local notes index with no cloud connectivity" },
+      { "step": "Context Injection", "model": "Qwen3-1.7B", "ram": "1,550 MB", "desc": "Synthesizes retrieved notes into a concise answer" }
+    ],
+    "peak_ram": "1,550 MB",
+    "end_to_end_latency": "~0.6 seconds"
+  },
+  {
+    "id": "wf-indian-assistant",
+    "title": "Offline Telugu Multilingual Assistant",
+    "intent": "Conversational instructions spoken in native Telugu",
+    "stages": [
+      { "step": "VAD Gate", "model": "Silero VAD", "ram": "4 MB", "desc": "Detects speech onset" },
+      { "step": "Telugu ASR", "model": "IndicConformer", "ram": "280 MB", "desc": "Converts Telugu audio to Telugu text" },
+      { "step": "Translation", "model": "IndicTrans2", "ram": "420 MB", "desc": "Translates Telugu into English prompt" },
+      { "step": "Reasoning", "model": "Qwen3-1.7B", "ram": "1,550 MB", "desc": "Evaluates intent and plans response" },
+      { "step": "Response TTS", "model": "IndicF5", "ram": "850 MB", "desc": "Synthesizes native Telugu spoken response" }
+    ],
+    "peak_ram": "1,550 MB (sequential execution)",
+    "end_to_end_latency": "~2.6 seconds"
+  }
+]

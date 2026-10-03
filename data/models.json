@@ -1,0 +1,402 @@
+[
+  {
+    "id": "silero-vad",
+    "name": "Silero VAD v5",
+    "category": "voice",
+    "role": "Continuous Speech Gate",
+    "parameters": "256 K",
+    "format_quant": "ONNX (FP32/INT8)",
+    "disk_size": "1.8 MB",
+    "active_ram": {
+      "weights": "1.8 MB",
+      "buffers": "2.2 MB",
+      "context_cache": "N/A",
+      "total_peak": "4.0 MB"
+    },
+    "runtime_engine": "Sherpa-ONNX (JNI)",
+    "hardware_target": "Cortex-A520 Efficiency Cores",
+    "benchmarks": {
+      "latency": "< 0.8 ms / 32ms frame",
+      "throughput": "Real-time streaming",
+      "power_impact": "< 0.4% battery / hour"
+    },
+    "description": "Mathematical energy gate monitoring incoming 16 kHz audio chunks. Eliminates battery drain by keeping Whisper suspended until genuine human speech is detected.",
+    "use_cases": ["Background voice trigger", "Streaming audio silence cutting", "Meeting pause detection"],
+    "lifecycle": "Always resident in background Android ForegroundService."
+  },
+  {
+    "id": "whisper-tiny",
+    "name": "Whisper Tiny",
+    "category": "voice",
+    "role": "Speech-to-Text Transcription (ASR)",
+    "parameters": "39 Million",
+    "format_quant": "INT8 Encoder / Decoder (ONNX)",
+    "disk_size": "75 MB",
+    "active_ram": {
+      "weights": "75 MB",
+      "buffers": "35 MB",
+      "context_cache": "10 MB",
+      "total_peak": "120 MB"
+    },
+    "runtime_engine": "Sherpa-ONNX (JNI)",
+    "hardware_target": "Dimensity 8400 Cortex-A725 Cores",
+    "benchmarks": {
+      "latency": "RTF 0.08x (~240ms per 3s chunk)",
+      "throughput": "12.5x real-time speed",
+      "power_impact": "Negligible burst execution"
+    },
+    "description": "Transcribes incoming voice commands and lecture audio completely offline. Excellent word accuracy for clear English audio.",
+    "use_cases": ["Spoken intent capture", "Offline lecture notes", "Voice memo dictation"],
+    "lifecycle": "Load into memory on VAD wake; process speech buffer; unload or put to sleep."
+  },
+  {
+    "id": "indic-conformer",
+    "name": "IndicConformer ASR",
+    "category": "india",
+    "role": "Indian Language Speech Recognition",
+    "parameters": "110 Million (Pruned)",
+    "format_quant": "INT8 ONNX",
+    "disk_size": "130 MB",
+    "active_ram": {
+      "weights": "130 MB",
+      "buffers": "95 MB",
+      "context_cache": "55 MB",
+      "total_peak": "280 MB"
+    },
+    "runtime_engine": "Sherpa-ONNX (JNI)",
+    "hardware_target": "Dimensity 8400 Cortex-A725 Cores",
+    "benchmarks": {
+      "latency": "RTF 0.22x (~660ms per 3s chunk)",
+      "throughput": "4.5x real-time speed",
+      "power_impact": "Moderate burst"
+    },
+    "description": "AI4Bharat speech-to-text model optimized specifically for 22 scheduled Indian languages, with robust accuracy on regional dialects including Telugu and Hindi.",
+    "use_cases": ["Telugu voice instructions", "Hindi note transcription", "Regional conversational commands"],
+    "lifecycle": "Activated on demand when multilingual toggle is enabled."
+  },
+  {
+    "id": "qwen3-1-7b",
+    "name": "Qwen3-1.7B",
+    "category": "brain",
+    "role": "Orchestrator, Reasoning & Tool Routing",
+    "parameters": "1.7 Billion",
+    "format_quant": "Q4_K_M (GGUF)",
+    "disk_size": "1.12 GB",
+    "active_ram": {
+      "weights": "1,140 MB",
+      "buffers": "95 MB",
+      "context_cache": "315 MB (2,048 tokens)",
+      "total_peak": "1,550 MB"
+    },
+    "runtime_engine": "llama.cpp (Vulkan NDK)",
+    "hardware_target": "Mali-G720 GPU + Cortex-A725",
+    "benchmarks": {
+      "latency": "TTFT: 280 ms",
+      "throughput": "32–38 tokens/sec",
+      "power_impact": "High during active token generation"
+    },
+    "description": "The central brain. Evaluates user intent, performs summarization, and outputs strictly structured JSON function arguments to trigger native Android alarms, calendar events, and apps.",
+    "use_cases": ["Structured tool calling", "Text summarization", "Query planning", "Offline chat"],
+    "lifecycle": "Resident during active usage sessions; evicted if vision VLM is summoned."
+  },
+  {
+    "id": "gemma-3-270m",
+    "name": "Gemma 3 270M",
+    "category": "brain",
+    "role": "Ultra-Fast Classifier & Intent Triage",
+    "parameters": "270 Million",
+    "format_quant": "Q4_K_M (GGUF)",
+    "disk_size": "190 MB",
+    "active_ram": {
+      "weights": "195 MB",
+      "buffers": "45 MB",
+      "context_cache": "70 MB (1,024 tokens)",
+      "total_peak": "310 MB"
+    },
+    "runtime_engine": "llama.cpp (CPU multithreaded)",
+    "hardware_target": "Cortex-A725 Cores (3 threads)",
+    "benchmarks": {
+      "latency": "TTFT: 45 ms",
+      "throughput": "95+ tokens/sec",
+      "power_impact": "Very low"
+    },
+    "description": "Microscopic language model intended to evaluate fast binary or multi-class decisions (e.g., triage incoming notifications or route queries) without waking the 1.7B model.",
+    "use_cases": ["Notification importance scoring", "Query route classification", "Grammar cleanup"],
+    "lifecycle": "Can remain resident during screen-on time."
+  },
+  {
+    "id": "smollm2-360m",
+    "name": "SmolLM2-360M",
+    "category": "brain",
+    "role": "Lightweight Text Transformer",
+    "parameters": "360 Million",
+    "format_quant": "Q4_K_M (GGUF)",
+    "disk_size": "245 MB",
+    "active_ram": {
+      "weights": "250 MB",
+      "buffers": "55 MB",
+      "context_cache": "85 MB (1,024 tokens)",
+      "total_peak": "390 MB"
+    },
+    "runtime_engine": "llama.cpp (Vulkan)",
+    "hardware_target": "Mali-G720 GPU",
+    "benchmarks": {
+      "latency": "TTFT: 70 ms",
+      "throughput": "75 tokens/sec",
+      "power_impact": "Low"
+    },
+    "description": "High-speed compact LLM benchmarked for on-device prompt rephrasing and simple text extraction where memory conservation is paramount.",
+    "use_cases": ["Quick summary generation", "Drafting message replies", "Benchmarking"],
+    "lifecycle": "Loaded on demand."
+  },
+  {
+    "id": "piper-tts",
+    "name": "Piper TTS",
+    "category": "voice",
+    "role": "Low-Latency Speech Synthesis",
+    "parameters": "20 Million",
+    "format_quant": "ONNX (Medium voice model)",
+    "disk_size": "35 MB",
+    "active_ram": {
+      "weights": "35 MB",
+      "buffers": "18 MB",
+      "context_cache": "7 MB",
+      "total_peak": "60 MB"
+    },
+    "runtime_engine": "Sherpa-ONNX (JNI)",
+    "hardware_target": "Cortex-A725 Cores",
+    "benchmarks": {
+      "latency": "RTF 0.06x (~120ms to start audio)",
+      "throughput": "16x real-time generation",
+      "power_impact": "Negligible"
+    },
+    "description": "Ultra-fast neural text-to-speech generating native PCM buffers directly streamed to Android AudioTrack. Ideal for immediate voice confirmations.",
+    "use_cases": ["Task completion confirmations", "Short voice responses", "Spoken reminders"],
+    "lifecycle": "Loaded instantly upon tool completion, generates audio buffer, unloads."
+  },
+  {
+    "id": "kokoro-82m",
+    "name": "Kokoro-82M",
+    "category": "voice",
+    "role": "High-Fidelity Neural TTS",
+    "parameters": "82 Million",
+    "format_quant": "INT8 ONNX",
+    "disk_size": "86 MB",
+    "active_ram": {
+      "weights": "86 MB",
+      "buffers": "42 MB",
+      "context_cache": "22 MB",
+      "total_peak": "150 MB"
+    },
+    "runtime_engine": "Sherpa-ONNX (JNI)",
+    "hardware_target": "Cortex-A725 Cores",
+    "benchmarks": {
+      "latency": "RTF 0.18x (~360ms to audio)",
+      "throughput": "5.5x real-time generation",
+      "power_impact": "Low to moderate"
+    },
+    "description": "Higher-quality neural voice synthesis featuring natural prosody and inflection. Designed for reading longer texts such as article digests and study summaries.",
+    "use_cases": ["Long-form note reading", "Textbook explanation narration", "Audiobook reading"],
+    "lifecycle": "Loaded for long-form speech jobs."
+  },
+  {
+    "id": "moondream-2",
+    "name": "Moondream 2",
+    "category": "vision",
+    "role": "Visual Reasoning & Question Answering (VLM)",
+    "parameters": "1.86 Billion",
+    "format_quant": "Q4_K_M (GGUF)",
+    "disk_size": "1.38 GB",
+    "active_ram": {
+      "weights": "1,410 MB",
+      "buffers": "280 MB (Vision encoder)",
+      "context_cache": "410 MB",
+      "total_peak": "2,100 MB"
+    },
+    "runtime_engine": "llama.cpp (Vulkan)",
+    "hardware_target": "Mali-G720 GPU",
+    "benchmarks": {
+      "latency": "TTFT: 2.1 seconds",
+      "throughput": "22 tokens/sec",
+      "power_impact": "High during vision encoding"
+    },
+    "description": "Accepts direct camera frames to answer natural-language questions about complex visual scenes, diagrams, architectural charts, and blackboard handwriting.",
+    "use_cases": ["Diagram explanation", "Scene analysis", "Visual question answering"],
+    "lifecycle": "Strict mutual exclusivity: never run concurrently with Qwen3-1.7B on 8 GB RAM."
+  },
+  {
+    "id": "smolvlm2-500m",
+    "name": "SmolVLM2-500M",
+    "category": "vision",
+    "role": "Lightweight Multimodal Inspection",
+    "parameters": "500 Million",
+    "format_quant": "Q4_K_M (GGUF)",
+    "disk_size": "380 MB",
+    "active_ram": {
+      "weights": "390 MB",
+      "buffers": "120 MB",
+      "context_cache": "140 MB",
+      "total_peak": "650 MB"
+    },
+    "runtime_engine": "llama.cpp (Vulkan)",
+    "hardware_target": "Mali-G720 GPU",
+    "benchmarks": {
+      "latency": "TTFT: 820 ms",
+      "throughput": "45 tokens/sec",
+      "power_impact": "Moderate"
+    },
+    "description": "A compact alternative to Moondream for low-latency visual queries when full 2.1 GB VLM headroom is unavailable.",
+    "use_cases": ["Quick object validation", "Simple scene captioning", "Rapid photo triage"],
+    "lifecycle": "Fast load/unload cycle (~180ms from UFS 4.0 storage)."
+  },
+  {
+    "id": "yolo11n",
+    "name": "YOLO11n",
+    "category": "vision",
+    "role": "Real-Time Object Detection",
+    "parameters": "2.62 Million",
+    "format_quant": "INT8 ONNX",
+    "disk_size": "3.1 MB",
+    "active_ram": {
+      "weights": "3.1 MB",
+      "buffers": "24.5 MB",
+      "context_cache": "4.4 MB",
+      "total_peak": "32.0 MB"
+    },
+    "runtime_engine": "ONNX Runtime Mobile (OpenCL / NNAPI)",
+    "hardware_target": "Mali-G720 GPU / NPU",
+    "benchmarks": {
+      "latency": "14 ms per 640x640 frame",
+      "throughput": "60+ FPS continuous",
+      "power_impact": "Low"
+    },
+    "description": "Calculates bounding boxes, classes, and confidence scores for objects in view at native camera frame rates. Perception without linguistic overhead.",
+    "use_cases": ["Camera automation", "Object counting", "Proximity presence detection"],
+    "lifecycle": "Spawned during active camera preview sessions."
+  },
+  {
+    "id": "pp-ocr-mobile",
+    "name": "PP-OCR Mobile v4/v5",
+    "category": "vision",
+    "role": "On-Device Document & Text Digitizer",
+    "parameters": "6.2 Million (Detector + Recognizer)",
+    "format_quant": "INT8 ONNX",
+    "disk_size": "16 MB",
+    "active_ram": {
+      "weights": "16 MB",
+      "buffers": "48 MB",
+      "context_cache": "11 MB",
+      "total_peak": "75 MB"
+    },
+    "runtime_engine": "ONNX Runtime Mobile",
+    "hardware_target": "Cortex-A725 CPU",
+    "benchmarks": {
+      "latency": "320 ms full page text extraction",
+      "throughput": "3.1 frames/sec",
+      "power_impact": "Low"
+    },
+    "description": "Ultra-specialized document reading pipeline. Extracts dense textual data from circulars, invoices, receipts, and classroom whiteboards in milliseconds.",
+    "use_cases": ["College notice parsing", "Receipt scanning", "Book page extraction"],
+    "lifecycle": "Invoked on static camera capture; passes text to Qwen3 and immediately releases."
+  },
+  {
+    "id": "bge-small-en",
+    "name": "BGE-small-en-v1.5",
+    "category": "memory",
+    "role": "Semantic Embedding Model",
+    "parameters": "33.5 Million",
+    "format_quant": "INT8 ONNX",
+    "disk_size": "34 MB",
+    "active_ram": {
+      "weights": "34 MB",
+      "buffers": "22 MB",
+      "context_cache": "12 MB",
+      "total_peak": "68 MB"
+    },
+    "runtime_engine": "ONNX Runtime Mobile",
+    "hardware_target": "Cortex-A725 CPU",
+    "benchmarks": {
+      "latency": "14 ms per 256-token text chunk",
+      "throughput": "70 chunks/sec",
+      "power_impact": "Negligible"
+    },
+    "description": "Transforms plain text notes and transcripts into 384-dimensional dense vectors stored directly in local SQLite tables for semantic similarity retrieval.",
+    "use_cases": ["Personal note search", "Transcribed lecture search", "Context retrieval (RAG)"],
+    "lifecycle": "Resident or warm-loaded on demand during search queries."
+  },
+  {
+    "id": "mobileclip-s0",
+    "name": "MobileCLIP-S0",
+    "category": "vision",
+    "role": "Zero-Shot Image & Text Retrieval",
+    "parameters": "11 Million",
+    "format_quant": "INT8 ONNX",
+    "disk_size": "24 MB",
+    "active_ram": {
+      "weights": "24 MB",
+      "buffers": "26 MB",
+      "context_cache": "8 MB",
+      "total_peak": "58 MB"
+    },
+    "runtime_engine": "ONNX Runtime Mobile",
+    "hardware_target": "Mali-G720 GPU / Cortex-A725",
+    "benchmarks": {
+      "latency": "22 ms per photo embedding",
+      "throughput": "45 photos/sec index speed",
+      "power_impact": "Low"
+    },
+    "description": "Maps photos and natural-language text into an identical latent coordinate space, allowing offline semantic searches like 'find pictures of my whiteboard diagrams'.",
+    "use_cases": ["Offline camera roll indexing", "Visual similarity search", "Semantic photo tagging"],
+    "lifecycle": "Runs as an Android WorkManager scheduled task during overnight charging."
+  },
+  {
+    "id": "indictrans2-distilled",
+    "name": "IndicTrans2 (Distilled)",
+    "category": "india",
+    "role": "Indian Language Neural Translation",
+    "parameters": "200 Million",
+    "format_quant": "Q4_K_M / INT8",
+    "disk_size": "260 MB",
+    "active_ram": {
+      "weights": "260 MB",
+      "buffers": "110 MB",
+      "context_cache": "50 MB",
+      "total_peak": "420 MB"
+    },
+    "runtime_engine": "CTranslate2 / llama.cpp",
+    "hardware_target": "Cortex-A725 CPU",
+    "benchmarks": {
+      "latency": "290 ms per sentence",
+      "throughput": "24 words/sec",
+      "power_impact": "Low"
+    },
+    "description": "Translates Indian regional languages (Telugu, Hindi, etc.) into English and vice versa, providing a bidirectional translation layer for English-centric models.",
+    "use_cases": ["Telugu to English instruction mapping", "Bilingual response translation"],
+    "lifecycle": "Loaded sequentially between speech recognition and reasoning layers."
+  },
+  {
+    "id": "indicf5-tts",
+    "name": "IndicF5",
+    "category": "india",
+    "role": "Indian Language Neural TTS",
+    "parameters": "400 Million",
+    "format_quant": "INT8 ONNX",
+    "disk_size": "460 MB",
+    "active_ram": {
+      "weights": "460 MB",
+      "buffers": "240 MB",
+      "context_cache": "150 MB",
+      "total_peak": "850 MB"
+    },
+    "runtime_engine": "ONNX Runtime Mobile",
+    "hardware_target": "Mali-G720 GPU",
+    "benchmarks": {
+      "latency": "RTF 0.65x (~1.3s for 2s audio)",
+      "throughput": "1.5x real-time generation",
+      "power_impact": "Moderate"
+    },
+    "description": "Neural speech synthesizer dedicated to expressive Indian language prosody across 11 languages, supporting natural Telugu speech output.",
+    "use_cases": ["Telugu spoken responses", "Multilingual voice assistance"],
+    "lifecycle": "Loaded on demand for regional audio playback; unloaded immediately after."
+  }
+]
